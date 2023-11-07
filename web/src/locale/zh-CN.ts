@@ -1,14 +1,17 @@
 import localeMessageBox from '@/components/message-box/locale/zh-CN';
 import localeLogin from '@/views/login/locale/zh-CN';
 
-import localeWorkplace from '@/views/dashboard/workplace/locale/zh-CN';
+import localePerfshow from '@/views/perfmanage/perfshow/locale/zh-CN';
+import localeScoreassign from '@/views/perfmanage/scoreassign/locale/zh-CN';
+import localeProfile from '@/views/userinfo/profile/locale/zh-CN';
 
 import localeSettings from './zh-CN/settings';
 
 export default {
-  'menu.dashboard': '仪表盘',
-  'menu.server.dashboard': '仪表盘-服务端',
-  'menu.server.workplace': '工作台-服务端',
+  'menu.perfmanage': '业绩管理',
+  'menu.server.perfmanage': '业绩管理-服务端',
+  'menu.server.perfshow': '业绩展示-服务端',
+  'menu.userinfo': '用户信息',
   'menu.server.monitor': '实时监控-服务端',
   'menu.list': '列表页',
   'menu.result': '结果页',
@@ -24,5 +27,7 @@ export default {
   ...localeSettings,
   ...localeMessageBox,
   ...localeLogin,
-  ...localeWorkplace,
+  ...localePerfshow,
+  ...localeScoreassign,
+  ...localeProfile,
 };

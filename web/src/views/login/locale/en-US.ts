@@ -1,5 +1,5 @@
 export default {
-  'login.form.title': 'Login to Arco Design Pro',
+  'login.form.title': 'Login to 教学评价平台（用户端）',
   'login.form.userName.errMsg': 'Username cannot be empty',
   'login.form.password.errMsg': 'Password cannot be empty',
   'login.form.login.errMsg': 'Login error, refresh and try again',

@@ -1,10 +1,6 @@
 <template>
-  <a-card
-    class="general-card"
-    :title="$t('workplace.recently.visited')"
-    :header-style="{ paddingBottom: '0' }"
-    :body-style="{ paddingTop: '26px' }"
-  >
+  <a-card class="general-card" :title="$t('perfshow.recently.visited')" :header-style="{ paddingBottom: '0' }"
+    :body-style="{ paddingTop: '26px' }">
     <div style="margin-bottom: -1rem">
       <a-row :gutter="8">
         <a-col v-for="link in links" :key="link.text" :span="8" class="wrapper">
@@ -23,22 +19,22 @@
 <script lang="ts" setup>
   const links = [
     {
-      text: 'workplace.contentManagement',
+      text: 'perfshow.contentManagement',
       icon: 'icon-storage',
     },
     {
-      text: 'workplace.contentStatistical',
+      text: 'perfshow.contentStatistical',
       icon: 'icon-file',
     },
     {
-      text: 'workplace.advanced',
+      text: 'perfshow.advanced',
       icon: 'icon-settings',
     },
   ];
 </script>
 
 <style lang="less" scoped>
-  :deep(.arco-card-header-title) {
-    line-height: inherit;
-  }
+:deep(.arco-card-header-title) {
+  line-height: inherit;
+}
 </style>

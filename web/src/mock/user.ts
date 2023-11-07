@@ -71,20 +71,20 @@ setupMock({
     Mock.mock(new RegExp('/api/user/menu'), () => {
       const menuList = [
         {
-          path: '/dashboard',
-          name: 'dashboard',
+          path: '/perfmanage',
+          name: 'perfmanage',
           meta: {
-            locale: 'menu.server.dashboard',
+            locale: 'menu.server.perfmanage',
             requiresAuth: true,
-            icon: 'icon-dashboard',
+            icon: 'icon-perfmanage',
             order: 1,
           },
           children: [
             {
-              path: 'workplace',
-              name: 'Workplace',
+              path: 'perfshow',
+              name: 'Perfshow',
               meta: {
-                locale: 'menu.server.workplace',
+                locale: 'menu.server.perfshow',
                 requiresAuth: true,
               },
             },
