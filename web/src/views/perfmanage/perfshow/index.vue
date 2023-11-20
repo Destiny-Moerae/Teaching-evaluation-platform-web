@@ -3,8 +3,9 @@
     <div class="left-side">
       <div class="panel">
         <Banner />
-        <DataPanel />
-        <ContentChart />
+        <!-- <DataPanel /> -->
+        <!-- <ContentChart /> -->
+        <PerfTree />
       </div>
       <a-grid :cols="24" :col-gap="16" :row-gap="16" style="margin-top: 16px">
         <a-grid-item :span="{ xs: 24, sm: 24, md: 24, lg: 12, xl: 12, xxl: 12 }">
@@ -48,6 +49,7 @@ import QuickOperation from './components/quick-operation.vue';
 import Announcement from './components/announcement.vue';
 import Carousel from './components/carousel.vue';
 import Docs from './components/docs.vue';
+import PerfTree from './components/perftree.vue'
 </script>
 
 <script lang="ts">
