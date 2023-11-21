@@ -1,5 +1,5 @@
 <template>
-  <a-layout-footer class="footer">Arco Pro</a-layout-footer>
+  <a-layout-footer class="footer">教学评价平台（管理端）</a-layout-footer>
 </template>
 
 <script lang="ts" setup></script>
