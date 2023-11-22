@@ -108,13 +108,14 @@
               </template>
               {{ $t('searchTable.operation.create') }}
             </a-button>
-            <a-upload action="/">
+            <!-- 导入按钮 -->
+            <!-- <a-upload action="/">
               <template #upload-button>
                 <a-button>
                   {{ $t('searchTable.operation.import') }}
                 </a-button>
               </template>
-            </a-upload>
+            </a-upload> -->
           </a-space>
         </a-col>
         <a-col
@@ -323,17 +324,18 @@
       dataIndex: 'contentType',
       slotName: 'contentType',
     },
-    {
-      title: t('searchTable.columns.filterType'),
-      dataIndex: 'filterType',
-    },
-    {
-      title: t('searchTable.columns.count'),
-      dataIndex: 'count',
-    },
+   
+    // {
+    //   title: t('searchTable.columns.count'),
+    //   dataIndex: 'count',
+    // },
     {
       title: t('searchTable.columns.createdTime'),
       dataIndex: 'createdTime',
+    }, 
+    {
+      title: t('searchTable.columns.filterType'),
+      dataIndex: 'filterType',
     },
     {
       title: t('searchTable.columns.status'),

@@ -10,7 +10,7 @@ const data = Mock.mock({
     {
       'id|8': /[A-Z][a-z][-][0-9]/,
       'number|2-3': /[0-9]/,
-      'name|4-8': /[A-Z]/,
+      'name|1': /[张李][三四]/,
       'contentType|1': ['img', 'horizontalVideo', 'verticalVideo'],
       'count|2-3': /[0-9]/,
       'status|1': ['online', 'offline'],
