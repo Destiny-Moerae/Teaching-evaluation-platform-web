@@ -10,11 +10,12 @@ const data = Mock.mock({
     {
       'id|8': /[A-Z][a-z][-][0-9]/,
       'number|2-3': /[0-9]/,
-      'name|1': /[张李][三四]/,
+      'name|1': /[张李][三四]/,      
+      'worknumber|3': /[0][0-9]/,
       'contentType|1': ['img', 'horizontalVideo', 'verticalVideo'],
       'count|2-3': /[0-9]/,
       'status|1': ['online', 'offline'],
-      'filterType|1': ['artificial', 'rules'],
+
       'createdTime': Random.datetime(),
     },
   ],

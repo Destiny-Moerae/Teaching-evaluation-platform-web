@@ -32,24 +32,23 @@
               </a-col>
               <a-col :span="8">
                 <a-form-item
+                  field="worknumber"
+                  :label="$t('searchTable.form.worknumber')"
+                >
+                  <a-input
+                    v-model="formModel.worknumber"
+                    :placeholder="$t('searchTable.form.worknumber.placeholder')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
                   field="contentType"
                   :label="$t('searchTable.form.contentType')"
                 >
                   <a-select
                     v-model="formModel.contentType"
                     :options="contentTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="filterType"
-                  :label="$t('searchTable.form.filterType')"
-                >
-                  <a-select
-                    v-model="formModel.filterType"
-                    :options="filterTypeOptions"
                     :placeholder="$t('searchTable.form.selectDefault')"
                   />
                 </a-form-item>
@@ -193,6 +192,7 @@
         :bordered="false"
         :size="size"
         @page-change="onPageChange"
+        
       >
         <template #index="{ rowIndex }">
           {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
@@ -228,8 +228,8 @@
             {{ $t(`searchTable.form.contentType.${record.contentType}`) }}
           </a-space>
         </template>
-        <template #filterType="{ record }">
-          {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
+        <template #worknumber="{ record }">
+          {{ $t(`searchTable.form.worknumber.${record.worknumber}`) }}
         </template>
         <template #status="{ record }">
           <span v-if="record.status === 'offline'" class="circle"></span>
@@ -237,9 +237,30 @@
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
         <template #operations>
-          <a-button v-permission="['admin']" type="text" size="small">
+          <a-button v-permission="['admin']" type="text" size="small" @click="handleClick">
             {{ $t('searchTable.columns.operations.view') }}
           </a-button>
+          <!-- //模态弹窗 -->
+         
+          <a-modal :mask-style="{backgroundColor: 'rgba(50, 50, 50, 0.1)',}" v-model:visible="visible" title="Modal Form" @cancel="handleCancel" @before-ok="handleBeforeOk" >
+            <a-form :model="form">
+              <a-form-item field="name" label="项目">
+                <a-input v-model="form.name" />
+              </a-form-item>
+              <a-form-item field="name" label="申请人">
+                <a-input v-model="form.person" />
+              </a-form-item>
+              <a-form-item field="post" label="权重">
+                <a-select v-model="form.post">
+                  <a-option value="post1">Post1</a-option>
+                  <a-option value="post2">Post2</a-option>
+                  <a-option value="post3">Post3</a-option>
+                  <a-option value="post4">Post4</a-option>
+                </a-select>
+              </a-form-item>
+            </a-form>
+          </a-modal>
+          
         </template>
       </a-table>
     </a-card>
@@ -266,7 +287,7 @@
       number: '',
       name: '',
       contentType: '',
-      filterType: '',
+      worknumber: '',
       createdTime: [],
       status: '',
     };
@@ -310,19 +331,28 @@
       title: t('searchTable.columns.index'),
       dataIndex: 'index',
       slotName: 'index',
+      align:'center',
     },
     {
       title: t('searchTable.columns.number'),
       dataIndex: 'number',
+      align:'center',
     },
     {
       title: t('searchTable.columns.name'),
       dataIndex: 'name',
+      align:'center',
+    },
+    {
+      title: t('searchTable.columns.worknumber'),
+      dataIndex: 'worknumber',
+      align:'center',
     },
     {
       title: t('searchTable.columns.contentType'),
       dataIndex: 'contentType',
       slotName: 'contentType',
+      align:'center',
     },
    
     // {
@@ -332,20 +362,20 @@
     {
       title: t('searchTable.columns.createdTime'),
       dataIndex: 'createdTime',
+      align:'center',
     }, 
-    {
-      title: t('searchTable.columns.filterType'),
-      dataIndex: 'filterType',
-    },
+    
     {
       title: t('searchTable.columns.status'),
       dataIndex: 'status',
       slotName: 'status',
+      align:'center',
     },
     {
       title: t('searchTable.columns.operations'),
       dataIndex: 'operations',
       slotName: 'operations',
+      align:'center',
     },
   ]);
   const contentTypeOptions = computed<SelectOptionData[]>(() => [
@@ -362,13 +392,13 @@
       value: 'verticalVideo',
     },
   ]);
-  const filterTypeOptions = computed<SelectOptionData[]>(() => [
+  const worknumberOptions = computed<SelectOptionData[]>(() => [
     {
-      label: t('searchTable.form.filterType.artificial'),
+      label: t('searchTable.form.worknumber.artificial'),
       value: 'artificial',
     },
     {
-      label: t('searchTable.form.filterType.rules'),
+      label: t('searchTable.form.worknumber.rules'),
       value: 'rules',
     },
   ]);
@@ -478,12 +508,36 @@
     },
     { deep: true, immediate: true }
   );
+
+
+  const visible = ref(false);
+    const form = reactive({
+      name: '',
+      person:'',
+      post: ''
+    });
+
+    const handleClick = () => {
+      visible.value = true;
+    };
+    const handleBeforeOk = (done: (closed: boolean) => void) => {
+      console.log(form)
+      window.setTimeout(() => {
+        // prevent close
+        done(false)
+      }, 3000)
+    };
+    const handleCancel = () => {
+      visible.value = false;
+    }
 </script>
 
+
+
 <script lang="ts">
-  export default {
+export default {
     name: 'SearchTable',
-  };
+};
 </script>
 
 <style scoped lang="less">
