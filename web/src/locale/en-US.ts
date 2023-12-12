@@ -2,7 +2,6 @@ import localeMessageBox from '@/components/message-box/locale/en-US';
 import localeLogin from '@/views/login/locale/en-US';
 
 import localePerfshow from '@/views/perfmanage/perfshow/locale/en-US';
-import localeScoreassign from '@/views/perfmanage/scoreassign/locale/en-US';
 import localeProfile from '@/views/userinfo/profile/locale/en-US';
 
 import localeSettings from './en-US/settings';
@@ -28,6 +27,5 @@ export default {
   ...localeMessageBox,
   ...localeLogin,
   ...localePerfshow,
-  ...localeScoreassign,
   ...localeProfile,
 };

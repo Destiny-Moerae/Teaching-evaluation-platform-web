@@ -2,7 +2,6 @@ import localeMessageBox from '@/components/message-box/locale/zh-CN';
 import localeLogin from '@/views/login/locale/zh-CN';
 
 import localePerfshow from '@/views/perfmanage/perfshow/locale/zh-CN';
-import localeScoreassign from '@/views/perfmanage/scoreassign/locale/zh-CN';
 import localeProfile from '@/views/userinfo/profile/locale/zh-CN';
 
 import localeSettings from './zh-CN/settings';
@@ -28,6 +27,5 @@ export default {
   ...localeMessageBox,
   ...localeLogin,
   ...localePerfshow,
-  ...localeScoreassign,
   ...localeProfile,
 };

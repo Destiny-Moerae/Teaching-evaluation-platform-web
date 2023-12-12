@@ -1,31 +1,36 @@
 <template>
   <div class="container">
     <div class="left-side">
-      <div class="panel">
+      <div class="panel" v-if="!isAssign">
         <Banner />
-        <!-- <DataPanel /> -->
-        <!-- <ContentChart /> -->
-        <PerfTree />
+        <PerfTree @nodeAssign="handleNodeAssign" />
       </div>
-      <a-grid :cols="24" :col-gap="16" :row-gap="16" style="margin-top: 16px">
-        <a-grid-item :span="{ xs: 24, sm: 24, md: 24, lg: 12, xl: 12, xxl: 12 }">
-          <PopularContent />
-        </a-grid-item>
-        <a-grid-item :span="{ xs: 24, sm: 24, md: 24, lg: 12, xl: 12, xxl: 12 }">
-          <CategoriesPercent />
-        </a-grid-item>
-      </a-grid>
+      <div class="panel" v-else>
+        <a-row>
+          <a-col :span="16">
+            <Banner />
+            <PerfTree @nodeAssign="handleNodeAssign" />
+          </a-col>
+          <a-col :span="8">
+            <detail :nodeData="selectedNodeData" class="detail" @update:isAssign="handleUpdateAssign" />
+          </a-col>
+        </a-row>
+      </div>
+
     </div>
+
+
+
     <div class="right-side">
       <a-grid :cols="24" :row-gap="16">
-        <a-grid-item :span="24">
-          <div class="panel moduler-wrap">
-            <QuickOperation />
-            <RecentlyVisited />
-          </div>
-        </a-grid-item>
+
         <a-grid-item class="panel" :span="24">
           <Carousel />
+        </a-grid-item>
+        <a-grid-item class="panel" :span="24">
+          <h2 style="margin-left: 10px;">距离划拨结束还剩：</h2>
+          <a-countdown style="margin:10px 5px" :value="Date.now() + 1000 * 60 * 60 * 24 * 4" :now="Date.now()"
+            format="D 天 H 时 m 分 s 秒" />
         </a-grid-item>
         <a-grid-item class="panel" :span="24">
           <Announcement />
@@ -39,9 +44,9 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+
 import Banner from './components/banner.vue';
-import DataPanel from './components/data-panel.vue';
-import ContentChart from './components/content-chart.vue';
 import PopularContent from './components/popular-content.vue';
 import CategoriesPercent from './components/categories-percent.vue';
 import RecentlyVisited from './components/recently-visited.vue';
@@ -50,13 +55,23 @@ import Announcement from './components/announcement.vue';
 import Carousel from './components/carousel.vue';
 import Docs from './components/docs.vue';
 import PerfTree from './components/perftree.vue'
+import Detail from './components/detail.vue'
+
+const isAssign = ref(false);
+const selectedNodeData = ref(null);
+
+function handleNodeAssign(nodeData: any) {
+  isAssign.value = true;
+  selectedNodeData.value = nodeData;
+}
+
+function handleUpdateAssign() {
+  isAssign.value = false;
+}
+
 </script>
 
-<script lang="ts">
-export default {
-  name: 'Perfmanage', // If you want the include property of keep-alive to take effect, you must name the component
-};
-</script>
+
 
 <style lang="less" scoped>
 .container {
@@ -64,11 +79,13 @@ export default {
   padding: 16px 20px;
   padding-bottom: 0;
   display: flex;
+  position: relative;
 }
 
 .left-side {
   flex: 1;
   overflow: auto;
+  position: sticky;
 }
 
 .right-side {
@@ -132,6 +149,12 @@ export default {
     background-color: rgb(var(--gray-1));
     border-radius: 4px;
   }
+}
+
+.detail {
+  position: absolute;
+  top: 10px;
+  width: 350px
 }
 </style>
 

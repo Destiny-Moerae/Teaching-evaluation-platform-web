@@ -22,16 +22,6 @@ const DASHBOARD: AppRouteRecordRaw = {
         roles: ['*'],
       },
     },
-    {
-      path: 'scoreassign',
-      name: 'Scoreassign',
-      component: () => import('@/views/perfmanage/scoreassign/index.vue'),
-      meta: {
-        locale: 'menu.perfmanage.scoreassign', // Replace with the actual locale key for the menu item
-        requiresAuth: true,
-        roles: ['*'],
-      },
-    },
   ],
 };
 

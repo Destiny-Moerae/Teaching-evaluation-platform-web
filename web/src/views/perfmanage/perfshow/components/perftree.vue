@@ -1,24 +1,29 @@
 <template>
   <div class="tree">
-    <a-input-search style="margin-bottom: 8px; max-width: 240px" v-model="searchKey" />
-
+    <a-input-search style="margin-bottom: 8px; max-width: 240px" v-model="searchKey" placeholder="请输入关键字" />
+    <a-year-picker style="width: 200px;margin-left: 20px;" />
     <a-tree :data="treeData">
       <template #title="nodeData">
         <template v-if="(index = getMatchIndex(nodeData?.title)) && index < 0">{{ nodeData?.title }}<span class="score"
-            style="margin-left: 8px;" v-if="nodeData?.score">`{{ nodeData?.score }}`</span></template>
+            style="margin-left: 8px;" v-if="nodeData?.score">`{{ nodeData?.score }}`</span>
+          <span style="margin-left: 8px;" v-if="nodeData?.isAssign == true"><a-button type="primary" shape="round"
+              size="mini" @click="handleClick(nodeData)">可划拨</a-button></span>
+        </template>
         <span v-else>
           {{ nodeData?.title?.substr(0, index) }}
           <span style="color: var(--color-primary-light-4);">
             {{ nodeData?.title?.substr(index, searchKey.length) }}
           </span>{{ nodeData?.title?.substr(index + searchKey.length) }}
           <span class="score" style="margin-left: 8px;" v-if="nodeData?.score">`{{ nodeData?.score }}`</span>
+          <span style="margin-left: 8px;" v-if="nodeData?.isAssign == true"><a-button type="primary" shape="round"
+              size="mini" @click="handleClick(nodeData)">可划拨</a-button></span>
         </span>
       </template>
     </a-tree>
   </div>
 </template>
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, defineEmits } from 'vue'
 
 const originTreeData = [
   {
@@ -32,7 +37,9 @@ const originTreeData = [
           {
             title: '理论课',
             key: '0-0-0-0',
-            score: 10
+            score: 10,
+            isAssign: true,
+            member: ["王立群", "张三", "李四"]
           },
           {
             title: '实验课',
@@ -64,7 +71,9 @@ const originTreeData = [
           {
             title: '社会实践',
             key: '0-0-1-3',
-            score: 5
+            score: 5,
+            isAssign: true,
+            member: ['王立群', '王五']
           },
           {
             title: '学生竞赛',
@@ -290,9 +299,9 @@ calculateScores(originTreeData)
 // Call the function to calculate the scores
 
 export default {
-  setup () {
-
+  setup (_, { emit }) {
     const searchKey = ref('')
+    const isAssign = ref('false')
     function searchData (keyword) {
       const loop = (data) => {
         const result = []
@@ -319,18 +328,28 @@ export default {
       return searchData(searchKey.value)
     })
 
-
-
     function getMatchIndex (title) {
       if (!searchKey.value) return -1
       return title.toLowerCase().indexOf(searchKey.value.toLowerCase())
     }
 
+    function handleClick (nodeData) {
+      isAssign.value = true
+      emit('nodeAssign', {
+        title: nodeData.title,
+        score: nodeData.score,
+        member: nodeData.member
+      }
+      )
+
+    }
     return {
       searchKey,
       treeData,
       getMatchIndex,
-      loadMore
+      loadMore,
+      handleClick,
+      isAssign
     }
   }
 }
