@@ -242,23 +242,42 @@
           </a-button>
           <!-- //模态弹窗 -->
          
-          <a-modal :mask-style="{backgroundColor: 'rgba(50, 50, 50, 0.1)',}" v-model:visible="visible" title="Modal Form" @cancel="handleCancel" @before-ok="handleBeforeOk" >
+          <a-modal :mask-style="{backgroundColor: 'rgba(50, 50, 50, 0.1)',}" v-model:visible="visible" title="划拨申请信息" @before-ok="handleBeforeOk" @cancel="handleCancel"  >
             <a-form :model="form">
               <a-form-item field="name" label="项目">
-                <a-input v-model="form.name" />
+                <a-label >{{ form.name }}</a-label>
               </a-form-item>
-              <a-form-item field="name" label="申请人">
-                <a-input v-model="form.person" />
+              <a-form-item field="person" label="申请人">
+                <a-tag size="medium">{{ form.person.name }}</a-tag>
+                <a-tag size="medium" color="green">{{ form.person.ratio }}</a-tag>
               </a-form-item>
-              <a-form-item field="post" label="权重">
-                <a-select v-model="form.post">
-                  <a-option value="post1">Post1</a-option>
-                  <a-option value="post2">Post2</a-option>
-                  <a-option value="post3">Post3</a-option>
-                  <a-option value="post4">Post4</a-option>
-                </a-select>
+              <a-form-item field="member" label="项目成员" 
+              v-for="item in form.member" 
+              :key="item.person">
+                <a-tag>
+                  {{ item.person }}
+                </a-tag>
+                <a-tag size="medium" color="green">{{ item.ratio }}</a-tag>
               </a-form-item>
+              <a-form-item field="check" label="审批意见">
+                <a-radio-group type="button">
+                  <a-radio value="Yes">通过</a-radio>
+                  <a-radio value="No">驳回</a-radio>
+                </a-radio-group>
+              </a-form-item>
+              
+              <a-form-item field="advice" label="审核建议">
+                <a-textarea placeholder="输入审核建议" ></a-textarea>
+              </a-form-item>
+              <center>
+                <a-button type="primary" shape="round" >提交</a-button>
+              </center>
             </a-form>
+            <template #footer>
+              <!-- 自定义按钮或其他内容 -->
+              <!-- 例如，去掉全部按钮 -->
+              <div></div>
+            </template>
           </a-modal>
           
         </template>
@@ -512,8 +531,16 @@
 
   const visible = ref(false);
     const form = reactive({
-      name: '',
-      person:'',
+      name: '服务外包大赛指导',
+      person:{
+        name:'张三 214545',
+        ratio:'60%'
+      },
+      member:[
+        { person: '张四 224515',ratio:'20%'}, 
+        { person: '张五 212542',ratio:'20%'}
+      ],
+      ratio:'20% 20%',
       post: ''
     });
 
@@ -537,6 +564,24 @@
 <script lang="ts">
 export default {
     name: 'SearchTable',
+    data() {  
+    return {  
+      selectedValue: null,  
+    };  
+  },  
+  computed: {  
+    isYesSelected() {  
+      return this.selectedValue === 'Yes';  
+    },  
+    isNoSelected() {  
+      return this.selectedValue === 'No';  
+    }  
+  },  
+  methods: {  
+    handleChange(event: { target: { value: null; }; }) {  
+      this.selectedValue = event.target.value;  
+    }  
+  }  
 };
 </script>
 
@@ -568,4 +613,5 @@ export default {
       cursor: pointer;
     }
   }
+
 </style>
