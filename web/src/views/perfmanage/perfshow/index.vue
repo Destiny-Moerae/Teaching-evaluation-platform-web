@@ -47,10 +47,6 @@
 import { ref } from 'vue'
 
 import Banner from './components/banner.vue';
-import PopularContent from './components/popular-content.vue';
-import CategoriesPercent from './components/categories-percent.vue';
-import RecentlyVisited from './components/recently-visited.vue';
-import QuickOperation from './components/quick-operation.vue';
 import Announcement from './components/announcement.vue';
 import Carousel from './components/carousel.vue';
 import Docs from './components/docs.vue';
@@ -90,6 +86,7 @@ function handleUpdateAssign() {
 
 .right-side {
   width: 280px;
+
   margin-left: 16px;
 }
 
