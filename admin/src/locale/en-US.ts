@@ -2,7 +2,7 @@ import localeMessageBox from '@/components/message-box/locale/en-US';
 import localeLogin from '@/views/login/locale/en-US';
 
 import localeWorkplace from '@/views/dashboard/workplace/locale/en-US';
-
+import localePerfmange from '@/views/perfmanage/perfshow/locale/en-US';
 import localeSettings from './en-US/settings';
 
 export default {
@@ -25,4 +25,5 @@ export default {
   ...localeMessageBox,
   ...localeLogin,
   ...localeWorkplace,
+  ...localePerfmange,
 };
