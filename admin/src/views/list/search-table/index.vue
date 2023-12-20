@@ -564,24 +564,6 @@
 <script lang="ts">
 export default {
     name: 'SearchTable',
-    data() {  
-    return {  
-      selectedValue: null,  
-    };  
-  },  
-  computed: {  
-    isYesSelected() {  
-      return this.selectedValue === 'Yes';  
-    },  
-    isNoSelected() {  
-      return this.selectedValue === 'No';  
-    }  
-  },  
-  methods: {  
-    handleChange(event: { target: { value: null; }; }) {  
-      this.selectedValue = event.target.value;  
-    }  
-  }  
 };
 </script>
 
@@ -613,5 +595,6 @@ export default {
       cursor: pointer;
     }
   }
+
 
 </style>

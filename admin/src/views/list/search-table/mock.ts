@@ -15,7 +15,10 @@ const data = Mock.mock({
       'contentType|1': ['img', 'horizontalVideo', 'verticalVideo'],
       'count|2-3': /[0-9]/,
       'status|1': ['online', 'offline'],
-
+      'level|1':['A','B','C','D'],
+      'index1|1':/[2-4][0-9]/,
+      'index2|1':/[1-2][0-9]/,
+      'index3|1':/[1][0-9]/,
       'createdTime': Random.datetime(),
     },
   ],
