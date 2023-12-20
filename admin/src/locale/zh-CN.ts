@@ -4,13 +4,14 @@ import localeLogin from '@/views/login/locale/zh-CN';
 import localeWorkplace from '@/views/dashboard/workplace/locale/zh-CN';
 import localeTable from '@/views/list/search-table/locale/zh-CN'
 import localeInforTable from '@/views/list/card/locale/zh-CN'
+import localePerfmange from '@/views/perfmanage/perfshow/locale/zh-CN';
 import localeSettings from './zh-CN/settings';
 
 export default {
   'menu.admin': '用户管理',
-  'menu.indexmanage':'指标管理',
-  'menu.list':'业绩数据划拨审批',
-  'menu.evalution-cal':'评估考核计算',
+  'menu.perfmanage': '指标管理',
+  'menu.list': '业绩数据划拨审批',
+  'menu.evalution-cal': '评估考核计算',
   'menu.server.dashboard': '仪表盘-服务端',
   'menu.server.workplace': '工作台-服务端',
   'menu.server.monitor': '实时监控-服务端',
@@ -28,6 +29,7 @@ export default {
   ...localeMessageBox,
   ...localeLogin,
   ...localeWorkplace,
+  ...localePerfmange,
   ...localeTable,
   ...localeInforTable,
 };
