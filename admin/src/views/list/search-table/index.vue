@@ -298,6 +298,10 @@
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
 
+
+
+  
+
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
 
@@ -557,13 +561,16 @@
     const handleCancel = () => {
       visible.value = false;
     }
+
+    
 </script>
 
 
-
 <script lang="ts">
+
 export default {
     name: 'SearchTable',
+   
 };
 </script>
 

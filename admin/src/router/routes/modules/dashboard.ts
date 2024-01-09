@@ -13,11 +13,11 @@ const DASHBOARD: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: 'workplace',
-      name: 'Workplace',
-      component: () => import('@/views/dashboard/workplace/index.vue'),
+      path: 'card', // The midline path complies with SEO specifications
+      name: 'Card',
+      component: () => import('@/views/list/card/index.vue'),
       meta: {
-        locale: 'menu.admin.workplace',
+        locale: 'menu.list.informationTable',
         requiresAuth: true,
         roles: ['*'],
       },

@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <Breadcrumb :items="['menu.list', 'menu.list.informationTable']" />
-    <a-card class="general-card" :title="$t('menu.list.informationTable')">
+  <div class="container" style="margin-top:10px;">
+
+    <a-card class="general-card" :title="$t('menu.list.informationTable')+'(计算机学院)'">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -11,18 +11,8 @@
             label-align="left"
           >
             <a-row :gutter="16">
-              <a-col :span="8">
-                <a-form-item
-                  field="number"
-                  :label="$t('informationTable.form.number')"
-                >
-                  <a-input
-                    v-model="formModel.number"
-                    :placeholder="$t('informationTable.form.number.placeholder')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
+              
+              <a-col :span="6">
                 <a-form-item field="name" :label="$t('informationTable.form.name')">
                   <a-input
                     v-model="formModel.name"
@@ -30,7 +20,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item
                   field="worknumber"
                   :label="$t('informationTable.form.worknumber')"
@@ -41,30 +31,8 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="contentType"
-                  :label="$t('informationTable.form.contentType')"
-                >
-                  <a-select
-                    v-model="formModel.contentType"
-                    :options="contentTypeOptions"
-                    :placeholder="$t('informationTable.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="createdTime"
-                  :label="$t('informationTable.form.createdTime')"
-                >
-                  <a-range-picker
-                    v-model="formModel.createdTime"
-                    style="width: 100%"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
+              
+              <a-col :span="6">
                 <a-form-item
                   field="status"
                   :label="$t('informationTable.form.status')"
@@ -79,9 +47,9 @@
             </a-row>
           </a-form>
         </a-col>
-        <a-divider style="height: 84px" direction="vertical" />
+       
         <a-col :flex="'86px'" style="text-align: right">
-          <a-space direction="vertical" :size="18">
+          <a-space direction="horizontal" :size="18">
             <a-button type="primary" @click="search">
               <template #icon>
                 <icon-search />
@@ -101,12 +69,12 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary">
+            <!-- <a-button type="primary">
               <template #icon>
                 <icon-plus />
               </template>
               {{ $t('informationTable.operation.create') }}
-            </a-button>
+            </a-button> -->
             <!-- 导入按钮 -->
             <!-- <a-upload action="/">
               <template #upload-button>
@@ -233,8 +201,10 @@
         </template>
         <template #level="{ record }">
           <span v-if="record.level === 'A'" class="circle" style="background-color: deepskyblue;"></span>
-          <span v-else-if="record.level === 'B'" class="circle"></span>
-          <div style="te">{{ $t(`informationTable.form.level.${record.level}`) }}</div>
+          <span v-else-if="record.level === 'B'" class="circle" style="background-color:chocolate;"></span>
+          <span v-else-if="record.level === 'C'" class="circle" style="background-color:green;"></span>
+          <span v-else class="circle"></span>
+          <span style="vertical-align:middle;">{{ $t(`informationTable.form.level.${record.level}`) }}</span>
         </template>
         <template #operations>
           <a-button v-permission="['admin']" type="text" size="small" @click="handleClick">

@@ -81,8 +81,8 @@ setupMock({
           },
           children: [
             {
-              path: 'workplace',
-              name: 'Workplace',
+              path: 'card',
+              name: 'Card',
               meta: {
                 locale: 'menu.server.workplace',
                 requiresAuth: true,
