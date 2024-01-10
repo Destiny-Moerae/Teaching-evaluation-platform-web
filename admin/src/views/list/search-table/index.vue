@@ -101,12 +101,12 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary">
+            <!-- <a-button type="primary">
               <template #icon>
                 <icon-plus />
               </template>
               {{ $t('searchTable.operation.create') }}
-            </a-button>
+            </a-button> -->
             <!-- 导入按钮 -->
             <!-- <a-upload action="/">
               <template #upload-button>
