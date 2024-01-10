@@ -6,9 +6,8 @@
           <!-- <DataPanel />
           <ContentChart /> -->
           
-          <div class="tree">
+          
             <PerfTree />
-          </div>
           
           
         </div>
@@ -94,10 +93,7 @@
       //overflow: auto;
     }
 
-    .tree{
-        overflow: hidden;
-    }
-
+    
     :deep(.panel-border) {
       margin-bottom: 0;
       border-bottom: 1px solid rgb(var(--gray-2));

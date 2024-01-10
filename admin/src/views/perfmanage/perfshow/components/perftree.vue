@@ -1,7 +1,7 @@
 <template>
     <a-tabs>
         <a-tab-pane key="1" title="当前应用">
-            <div class="tree">
+            <div class="tree" v-if="typeof treeData !== 'undefined'">
                 <a-input-search style=" max-width: 240px;margin-bottom: 8px" v-model="searchKey" />
                 <a-popconfirm content="请再次确认修改">
                     <a-button type="primary" style=" right: 30px;float: right">提交修改</a-button>
@@ -14,90 +14,12 @@
                             <icon-edit style="position: absolute; top: 10px; right: -50px; font-size: 12px;"
                                 @click="handleEdit(nodeData)" />
                             <a-input v-if="nodeData.isEdit" v-model="nodeData.title" :placeholder="nodeData.title"
-                                @blur="moveOff(nodeData)"></a-input>
+                                @blur="moveOff(nodeData), uNode(nodeData)" autofocus></a-input>
                             <icon-delete style="position: absolute; top: 10px; right: -70px; font-size: 12px;"
-                                @click="deleteNode(nodeData)" />
+                                @click="deleteNode(nodeData), DNode(nodeData)" />
                             <icon-plus style="position: absolute; top: 10px; right: -90px; font-size: 12px;"
-                                @click="addNode(nodeData)" />
-                            <a-checkbox value="1"
-                                style="position: absolute; top: 0; right: -150px; font-size: 12px;">赋分</a-checkbox>
-                        </template>
-
-                        <span v-else>
-                            {{ nodeData?.title?.substr(0, index) }}
-                            <span style="color: var(--color-primary-light-4);">
-                                {{ nodeData?.title?.substr(index, searchKey.length) }}
-                            </span>{{ nodeData?.title?.substr(index + searchKey.length) }}
-
-
-                        </span>
-
-                    </template>
-                </a-tree>
-
-
-
-            </div>
-        </a-tab-pane>
-        <a-tab-pane key="2" title="2022">
-            <div class="tree">
-                <a-input-search style=" max-width: 240px;margin-bottom: 8px" v-model="searchKey" />
-                <a-popconfirm content="请再次确认修改">
-                    <a-button type="primary" style=" right: 30px;float: right">提交修改</a-button>
-                </a-popconfirm>
-
-                <a-tree :data="treeData1">
-                    <template #title="nodeData">
-
-                        <template v-if="(index = getMatchIndex(nodeData?.title)) && index < 0">{{ nodeData?.title }}
-                            <icon-edit style="position: absolute; top: 10px; right: -50px; font-size: 12px;"
-                                @click="handleEdit(nodeData)" />
-                            <a-input v-if="nodeData.isEdit" v-model="nodeData.title" :placeholder="nodeData.title"
-                                @blur="moveOff(nodeData)"></a-input>
-                            <icon-delete style="position: absolute; top: 10px; right: -70px; font-size: 12px;"
-                                @click="deleteNode(nodeData)" />
-                            <icon-plus style="position: absolute; top: 10px; right: -90px; font-size: 12px;"
-                                @click="addNode(nodeData)" />
-                            <a-checkbox value="1"
-                                style="position: absolute; top: 0; right: -150px; font-size: 12px;">赋分</a-checkbox>
-                        </template>
-
-                        <span v-else>
-                            {{ nodeData?.title?.substr(0, index) }}
-                            <span style="color: var(--color-primary-light-4);">
-                                {{ nodeData?.title?.substr(index, searchKey.length) }}
-                            </span>{{ nodeData?.title?.substr(index + searchKey.length) }}
-
-
-                        </span>
-
-                    </template>
-                </a-tree>
-
-
-
-            </div>
-        </a-tab-pane>
-        <a-tab-pane key="3" title="空白模板">
-            <div class="tree">
-                <a-input-search style=" max-width: 240px;margin-bottom: 8px" v-model="searchKey" />
-                <a-popconfirm content="请再次确认修改">
-                    <a-button type="primary" style=" right: 30px;float: right">提交修改</a-button>
-                </a-popconfirm>
-
-                <a-tree :data="treeData2">
-                    <template #title="nodeData">
-
-                        <template v-if="(index = getMatchIndex(nodeData?.title)) && index < 0">{{ nodeData?.title }}
-                            <icon-edit style="position: absolute; top: 10px; right: -50px; font-size: 12px;"
-                                @click="handleEdit(nodeData)" />
-                            <a-input v-if="nodeData.isEdit" v-model="nodeData.title" :placeholder="nodeData.title"
-                                @blur="moveOff(nodeData)"></a-input>
-                            <icon-delete style="position: absolute; top: 10px; right: -70px; font-size: 12px;"
-                                @click="deleteNode(nodeData)" />
-                            <icon-plus style="position: absolute; top: 10px; right: -90px; font-size: 12px;"
-                                @click="addNode(nodeData)" />
-                            <a-checkbox value="1"
+                                @click="addNewNode(nodeData), addNode(nodeData)" />
+                            <a-checkbox v-model="nodeData.isAssign"
                                 style="position: absolute; top: 0; right: -150px; font-size: 12px;">赋分</a-checkbox>
                         </template>
 
@@ -120,293 +42,12 @@
     </a-tabs>
 </template>
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, nextTick, onUpdated } from 'vue'
+import { getPointerList, saveNewNode, deleteANode, updateNode } from '@/api/perfmanage'
+
+const originTreeData = ref();
 
 
-const originTreeData = ref([
-    {
-        title: '教学工作量 (S1)',
-        key: '0-0',
-        isEdit: 0,
-        isAssign: 0,
-        children: [
-            {
-                title: '课堂教学',
-                key: '0-0-0',
-                isEdit: 0,
-                isAssign: 0,
-                children: [
-                    {
-                        title: '理论课',
-                        key: '0-0-0-0',
-                        isEdit: 0,
-                        isAssign: 0,
-                        score: 10
-                    },
-                    {
-                        title: '实验课',
-                        key: '0-0-0-1',
-                        isEdit: 0,
-                        isAssign: 0,
-                        score: 20
-                    },
-                    {
-                        title: '体育课',
-                        isEdit: 0,
-                        isAssign: 0,
-                        key: '0-0-0-2',
-                    }
-                ]
-            },
-            {
-                title: '实践环节',
-                key: '0-0-1',
-                isEdit: 0,
-                children: [
-                    {
-                        title: '实习',
-                        key: '0-0-1-0',
-                        isEdit: 0,
-                    },
-                    {
-                        title: '课程设计',
-                        key: '0-0-1-1',
-                        isEdit: 0,
-                    },
-                    {
-                        title: '毕业设计（论文）',
-                        key: '0-0-1-2',
-                        isEdit: 0,
-                    },
-                    {
-                        title: '社会实践',
-                        key: '0-0-1-3',
-                        isEdit: 0,
-                        score: 5
-                    },
-                    {
-                        title: '学生竞赛',
-                        key: '0-0-1-4',
-                        isEdit: 0,
-                    },
-                ]
-            },
-            {
-                title: '其它教学工作',
-                key: '0-0-2',
-                isEdit: 0,
-                children: [
-                    {
-                        title: '学术报告或讲座',
-                        key: '0-0-2-0',
-                        isEdit: 0,
-                        score: 20
-                    },
-                    {
-                        title: '指导学生社团',
-                        key: '0-0-2-1',
-                        isEdit: 0,
-                    },
-
-                ]
-            }
-        ],
-    },
-    {
-        title: '教学效果 (S2)',
-        key: '0-1',
-        isEdit: 0,
-        children: [
-            {
-                title: '课堂教学质量 (S21)',
-                key: '0-1-0',
-                isEdit: 0,
-                children: [
-                    {
-                        title: '学评教',
-                        key: '0-1-0-0',
-                        isEdit: 0,
-                    },
-                    {
-                        title: '专家评教',
-                        key: '0-1-0-1',
-                        isEdit: 0,
-                    },
-                    {
-                        title: '学院评教',
-                        key: '0-1-0-2',
-                        isEdit: 0,
-                    }
-                ]
-            },
-            {
-                title: '指导学生获奖情况 (S22)',
-                key: '0-1-1',
-                isEdit: 0,
-                children: [
-                    {
-                        title: '本科生学科竞赛',
-                        key: '0-1-1-1',
-                        isEdit: 0,
-                    },
-                    {
-                        title: '大学生运动会、锦标赛或单项协会比赛',
-                        key: '0-1-1-2',
-                        isEdit: 0,
-                    },
-                    {
-                        title: '其它省级以上比赛',
-                        key: '0-1-1-3',
-                        isEdit: 0,
-                    }
-                ]
-            },
-            {
-                title: '教学奖惩 (S23)',
-                key: '0-1-2',
-                isEdit: 0,
-                children: [
-                    {
-                        title: '教学成果奖',
-                        key: '0-1-2-0',
-                        isEdit: 0,
-                        score: 5
-                    },
-                    {
-                        title: '教学名师奖',
-                        key: '0-1-2-1',
-                        isEdit: 0,
-                        score: 6
-                    },
-                    {
-                        title: '其它教学奖励',
-                        key: '0-1-2-2',
-                        isEdit: 0,
-                        score: 4
-                    },
-                    {
-                        title: '教学技能奖',
-                        key: '0-1-2-3',
-                        isEdit: 0,
-                    },
-                    {
-                        title: '教学异常',
-                        key: '0-1-2-4',
-                        isEdit: 0,
-                    },
-                    {
-                        title: '教学事故',
-                        key: '0-1-2-5',
-                        isEdit: 0,
-                    },
-                ]
-            }
-
-
-        ]
-    },
-    {
-        key: '0-2',
-        title: '教学建设与研究 (S3)',
-        children: [
-            {
-                key: '0-2-0',
-                title: '教学研究与改革项目 (S31)',
-                children: [
-                    {
-                        key: "0-2-0-0",
-                        title: '教改项目（立项当年）'
-                    },
-                    {
-                        key: "0-2-0-1",
-                        title: '团队类项目（建设期内）'
-                    },
-                    {
-                        key: "0-2-0-2",
-                        title: '教学团队（立项当年）'
-                    },
-                ]
-            },
-            {
-                key: '0-2-1',
-                title: '教学建设 (S32)',
-                children: [
-                    {
-                        key: "0-2-1-0",
-                        title: '专业建设（建设期内）'
-                    },
-                    {
-                        key: "0-2-1-1",
-                        title: '课程建设（建设期内）'
-                    },
-                    {
-                        key: "0-2-1-2",
-                        title: '教材建设（立项当年）（注3）'
-                    },
-                ]
-            },
-            {
-                key: '0-2-2',
-                title: '教学研究论文或论著 (S33)',
-                children: [
-                    {
-                        key: "0-2-2-0",
-                        title: '公开发表论文（注4）'
-                    },
-                ]
-            },
-        ]
-    }
-
-])
-
-const originTreeData1 = ref([
-    {
-        title: '教学工作量 (S1)',
-        key: '0-0',
-        isEdit: 0,
-        isAssign: 0,
-        children: [
-            {
-                title: '课堂教学',
-                key: '0-0-0',
-                isEdit: 0,
-                isAssign: 0,
-                children: [
-                    {
-                        title: '理论课',
-                        key: '0-0-0-0',
-                        isEdit: 0,
-                        isAssign: 0,
-                        score: 10
-                    },
-                    {
-                        title: '实验课',
-                        key: '0-0-0-1',
-                        isEdit: 0,
-                        isAssign: 0,
-                        score: 20
-                    },
-                    {
-                        title: '体育课',
-                        isEdit: 0,
-                        isAssign: 0,
-                        key: '0-0-0-2',
-                    }
-                ]
-            },]
-    }
-])
-
-const originTreeData2 = ref([
-    {
-        title: 'new tree node',
-        key: '0-0',
-        isEdit: 0,
-        isAssign: 0,
-        children: []
-    }
-])
 const loadMore = (nodeData) => {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -471,6 +112,36 @@ function calculateScores(data) {
     }
 }
 
+function convertToOriginTreeData(data) {
+    const nodeMap = new Map();
+   
+    Object.values(data).forEach(nodeData => {
+        const { id, pointer_number, pointer_used, super_id, name, assign } = nodeData;
+        let b = false
+        if(assign){
+            b = true
+        }
+        const node = {
+            id,
+            title: name,
+            key: pointer_used,
+            super_id,
+            isEdit: false,
+            isAssign: b,
+            children: []
+        };
+        nodeMap.set(id, node);
+
+        if (super_id !== 0) {
+            const parentNode = nodeMap.get(super_id);
+            parentNode.children.push(node);
+        }
+    });
+
+    const OTD = Array.from(nodeMap.values()).filter(node => /^0-\d$/.test(node.key));
+
+    return OTD;
+}
 
 calculateScores(originTreeData)
 // Call the function to calculate the scores
@@ -489,6 +160,61 @@ calculateScores(originTreeData)
 
 export default {
     setup() {
+
+        async function getPointers() {
+            const res = await getPointerList({
+
+            })
+
+            originTreeData.value = convertToOriginTreeData(res.data);
+            console.log(originTreeData.value)
+        }
+        /* async function addNewNode() {
+            const res = await saveNewNode({
+
+            })
+            
+        } */
+        async function addNewNode(nodeData) {
+            const res = await saveNewNode({
+                "pointer_used": `${nodeData.key}-${nodeData.children.length}`,
+                "super_id": nodeData.id,
+                "name": "new tree data",
+                "divide": 0,
+                "note": "无"
+            })
+
+        }
+        async function uNode(nodeData) {
+            let a = 0
+            if (nodeData.isAssign) {
+                a = 1
+            }
+            const res = await updateNode({
+                "id": nodeData.id,
+                "pointer_used": nodeData.key,
+                "super_id": nodeData.super_id,
+                "name": nodeData.title,
+                "assign": a,
+                "divide": 0,
+                "note": "无"
+            })
+            console.log(a);
+        }
+        async function DNode(nodeData) {
+            const res = await deleteANode({
+                "id": nodeData.id
+            })
+
+            await getPointerList();
+            console.log(originTreeData);
+        }
+
+
+        onMounted(() => {
+            getPointers();
+        });
+
 
 
 
@@ -521,15 +247,6 @@ export default {
             return searchData(searchKey.value)
         })
 
-        const treeData1 = computed(() => {
-            if (!searchKey.value) return originTreeData1.value
-            return searchData(searchKey.value)
-        })
-
-        const treeData2= computed(() => {
-            if (!searchKey.value) return originTreeData2.value
-            return searchData(searchKey.value)
-        })
 
 
 
@@ -537,6 +254,7 @@ export default {
 
         function handleEdit(nodeData) {
             nodeData.isEdit = !nodeData.isEdit;
+
 
         }
         function moveOff(nodeData) {
@@ -566,13 +284,13 @@ export default {
                 parent.children.splice(index, 1);
             } else {
                 const parentKey = nodeData.key.substr(0, 1)
-                // originTreeData.value.splice(parentKey1,1);
                 const index = originTreeData.value.findIndex(item => item.key === nodeData.key)
                 originTreeData.value.splice(index, 1);
 
             }
 
         }
+
         function addNode(nodeData) {
             const children = nodeData.children || []
             children.push({
@@ -581,7 +299,7 @@ export default {
                 key: `${nodeData.key}-${children.length}`
             })
             nodeData.children = children
-            console.log(nodeData.children);
+            console.log(`${nodeData.key}-${nodeData.children.length}`);
 
             originTreeData.value = [...originTreeData.value];
         }
@@ -604,23 +322,28 @@ export default {
    
                treeData.value = [...treeData.value];
            }
+           
     */
+
 
 
         return {
             searchKey,
             treeData,
-            treeData1,
-            treeData2,
             getMatchIndex,
             loadMore,
             handleEdit,
             moveOff,
             deleteNode,
+            DNode,
+            uNode,
             addNode,
+            addNewNode,
+            getPointers,
         }
     }
 }
+
 
 </script>
 
