@@ -101,12 +101,12 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary">
+            <!-- <a-button type="primary">
               <template #icon>
                 <icon-plus />
               </template>
               {{ $t('searchTable.operation.create') }}
-            </a-button>
+            </a-button> -->
             <!-- 导入按钮 -->
             <!-- <a-upload action="/">
               <template #upload-button>
@@ -297,6 +297,10 @@
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+
+
+
+  
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -557,31 +561,16 @@
     const handleCancel = () => {
       visible.value = false;
     }
+
+    
 </script>
 
 
-
 <script lang="ts">
+
 export default {
     name: 'SearchTable',
-    data() {  
-    return {  
-      selectedValue: null,  
-    };  
-  },  
-  computed: {  
-    isYesSelected() {  
-      return this.selectedValue === 'Yes';  
-    },  
-    isNoSelected() {  
-      return this.selectedValue === 'No';  
-    }  
-  },  
-  methods: {  
-    handleChange(event: { target: { value: null; }; }) {  
-      this.selectedValue = event.target.value;  
-    }  
-  }  
+   
 };
 </script>
 
@@ -618,5 +607,6 @@ export default {
       cursor: pointer;
     }
   }
+
 
 </style>

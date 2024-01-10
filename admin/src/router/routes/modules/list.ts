@@ -12,6 +12,7 @@ const SCOREALLOCATION: AppRouteRecordRaw = {
     order: 2,
   },
   children: [
+  
     {
       path: 'search-table', // The midline path complies with SEO specifications
       name: 'SearchTable',
@@ -23,6 +24,7 @@ const SCOREALLOCATION: AppRouteRecordRaw = {
       },
     },
   ],
+
 };
 
 export default SCOREALLOCATION;
